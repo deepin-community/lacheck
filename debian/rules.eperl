@@ -1,0 +1,76 @@
+<: # ePerl source file :>//
+#! /usr/bin/make -f
+#
+# makefile rules for the Debian package lacheck
+#
+<:
+  open (my $copyright, "< COPYRIGHT");
+  while (<$copyright>) {print '#' . (/^$/ ? "\n" : " $_")};
+  close $copyright;
+:>//
+
+SHELL := /bin/bash
+SBUILD := sbuild --verbose
+
+EPERL_SRC := $(wildcard debian/*.eperl)
+EPERL_OBJ := $(EPERL_SRC:%.eperl=%)
+
+debian/clean: $(EPERL_OBJ)
+	echo $(filter-out debian/copyright debian/rules, $(EPERL_OBJ)) \
+		debian/clean > debian/clean
+
+<: # ePerl is simply great: thanks, Ralf! :>//
+%:: %.eperl
+	eperl -P -o $@ $<
+
+.PHONY: build
+build: debian/clean
+	dh $@ --exclude .eperl
+
+%:
+	dh $@ --exclude .eperl
+
+.PHONY: override_dh_auto_build
+override_dh_auto_build:
+	$(MAKE) $(shell dpkg-buildflags --export=cmdline) prefix=/usr \
+		lacheck lacheck.1
+
+.PHONY: override_dh_auto_install
+override_dh_auto_install:
+	dh_auto_install -- prefix=/usr mandir=/usr/share/man/man1
+
+.PHONY: snapshot
+snapshot: OBJ := --arch-any
+snapshot: DIST := unstable
+snapshot: BRANCH := $(shell git branch | perl -ne 'print if s/^\* //')
+snapshot: clean
+	gbp dch --debian-branch=$(BRANCH) --snapshot --auto --commit
+	gbp buildpackage --keyid='' \
+		--git-builder='$(SBUILD) $(OBJ) --dist=$(DIST)' \
+		--git-debian-branch=$(BRANCH)
+
+.PHONY: release
+release: OBJ := --arch-all --arch-any --source --source-only-changes
+release: DIST := unstable
+release: clean
+	git checkout master
+	gbp pq rebase
+	gbp pq export
+	gbp dch --release --commit
+	gbp buildpackage \
+		--git-builder='$(SBUILD) $(OBJ) --dist=$(DIST)' \
+		--git-tag
+
+.PHONY: upload
+upload: V := $(shell dpkg-parsechangelog --show-field Version)
+upload:
+	dput ../lacheck_$(V)_source.changes
+<:
+# local variables:
+# mode: makefile-gmake
+# ispell-local-dictionary: "american"
+# ispell-check-comments: exclusive
+# end:
+#
+# LocalWords:  ePerl makefile lacheck
+:>//

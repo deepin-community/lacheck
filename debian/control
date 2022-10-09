@@ -1,0 +1,26 @@
+Source: lacheck
+Priority: optional
+Section: tex
+Build-Depends: debhelper (>= 9), eperl
+Maintainer: Davide G. M. Salvetti <salve@debian.org>
+Standards-Version: 3.9.8
+Homepage: https://www.ctan.org/tex-archive/support/lacheck/
+Vcs-Browser: https://anonscm.debian.org/gitweb/?p=users/salve/lacheck.git;a=summary
+Vcs-Git: https://anonscm.debian.org/git/users/salve/lacheck.git
+
+Package: lacheck
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: texlive-latex-base
+Suggests: auctex
+Replaces: auctex (<< 9.7l-1)
+Breaks: auctex (<< 9.7l-1)
+Description: Simple syntax checker for LaTeX
+ LaCheck is a simple syntax checker for LaTex that is based on a
+ single-pass lexical scanner. This makes clear that there are a lot of
+ LaTeX problems this program cannot find, although it will find most
+ simple mistakes.  Complex macro packages may, however, make it completely
+ unusable.
+ .
+ This program was bundled with AUCTeX once upon a time and is best known
+ from there.

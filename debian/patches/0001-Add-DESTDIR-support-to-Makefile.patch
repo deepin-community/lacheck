@@ -1,0 +1,23 @@
+From: "Davide G. M. Salvetti" <salve@debian.org>
+Date: Mon, 30 Aug 2010 18:24:40 +0200
+Subject: Add DESTDIR support to Makefile.
+
+---
+ Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index a7e2b5a..71a2619 100644
+--- a/Makefile
++++ b/Makefile
+@@ -68,8 +68,8 @@ check:		test.new
+ 	-diff $(srcdir)/test.old $(srcdir)/test.new
+ 
+ install: 	$(LACHECK) lacheck.1
+-	cp $(srcdir)/$(LACHECK) $(bindir)
+-	cp $(srcdir)/lacheck.1 $(mandir)/lacheck$(manext) 
++	cp $(srcdir)/$(LACHECK) $(DESTDIR)$(bindir)
++	cp $(srcdir)/lacheck.1 $(DESTDIR)$(mandir)/lacheck$(manext) 
+ 
+ uninstall:
+ 	-rm -f $(bindir)/$(LACHECK) $(mandir)/lacheck$(manext) 

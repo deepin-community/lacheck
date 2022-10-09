@@ -1,0 +1,11 @@
+The Debian package lacheck
+--------------------------
+
+
+Online documentation
+====================
+
+Online documentation may be found in the lacheck(1) manual page.
+
+
+-- Davide G. M. Salvetti <salve@debian.org>, <? system("dpkg-parsechangelog --show-field Date"); !>>

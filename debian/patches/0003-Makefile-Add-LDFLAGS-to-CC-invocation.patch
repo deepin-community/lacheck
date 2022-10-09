@@ -1,0 +1,22 @@
+From: "Davide G. M. Salvetti" <salve@debian.org>
+Date: Wed, 5 Nov 2014 22:46:17 +0100
+Subject: Makefile: Add $(LDFLAGS) to $(CC) invocation
+
+Needed to pass dpkg-buildflags to the linker.
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 7fafa79..6c2a2a4 100644
+--- a/Makefile
++++ b/Makefile
+@@ -42,7 +42,7 @@ FLEXFLAGS = -8
+ LIBS= #-ll
+ 
+ $(LACHECK):	lacheck.o
+-	$(CC) $(CFLAGS) -o $@ $(srcdir)/lacheck.o $(LIBS)
++	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/lacheck.o $(LIBS)
+ 
+ lacheck.c:	lacheck.lex  
+ 	-if [ ! -f $(srcdir)/lacheck.noflex.c ] ; then \

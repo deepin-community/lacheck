@@ -1,0 +1,4 @@
+0001-Add-DESTDIR-support-to-Makefile.patch
+0002-Fix-check-target-in-Makefile.patch
+0003-Makefile-Add-LDFLAGS-to-CC-invocation.patch
+0004-Reproducible-build.patch

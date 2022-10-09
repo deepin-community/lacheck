@@ -1,0 +1,32 @@
+From: "Davide G. M. Salvetti" <salve@debian.org>
+Date: Mon, 30 Aug 2010 18:46:51 +0200
+Subject: Fix check target in Makefile.
+
+- The check target should fail if the program test fail.
+- The check target creates test.new, which should be cleaned while
+  performing the clean target.
+---
+ Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 71a2619..7fafa79 100644
+--- a/Makefile
++++ b/Makefile
+@@ -65,7 +65,7 @@ test.old:	test.tex $(LACHECK)
+ 	$(srcdir)/$(LACHECK) $(srcdir)/test.tex > $@ 
+ 
+ check:		test.new
+-	-diff $(srcdir)/test.old $(srcdir)/test.new
++	diff $(srcdir)/test.old $(srcdir)/test.new
+ 
+ install: 	$(LACHECK) lacheck.1
+ 	cp $(srcdir)/$(LACHECK) $(DESTDIR)$(bindir)
+@@ -76,6 +76,7 @@ uninstall:
+ 
+ clean:
+ 	-rm -f $(srcdir)/$(LACHECK) $(srcdir)/*.o $(srcdir)/*.1 $(srcdir)/*~
++	rm -f test.new
+ 
+ distclean:	clean
+ 

@@ -1,0 +1,257 @@
+lacheck (1.26-17) unstable; urgency=medium
+
+  * [28a5ded] debian/patches (Reproducible-build): New.
+    Thanks to Chris Lamb
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sun, 15 Jan 2017 23:59:04 +0100
+
+lacheck (1.26-16) unstable; urgency=medium
+
+  * [4a05657] Upgrade Standards-Version to 3.9.8
+  * [1effe8d] debian/README.Debian: Do not include timestamps.
+    Thanks to Chris Lamb (Closes: #831046)
+  * [d9df771] debian/control: Use secure uris in VCS fields
+  * [190457e] debian/rules: Source only upload
+  * [f2bbf0b] debian/rules: Use sbuild instead of pbuilder
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sun, 15 Jan 2017 19:40:41 +0100
+
+lacheck (1.26-15) unstable; urgency=medium
+
+  * [853d5ec] Upgrade Standards-Version to 3.9.6
+  * [b0c5dcf] debian/control: Add VCS fields
+  * [c9bf146] debian/copyright: Switch to machine readable format
+  * [7b8a9b5] Switch to debhelper compatibility level 9
+  * [efeb2df] Add patch: Add $(LDFLAGS) to $(CC) invocation
+  * [e4353ad] debian/rules (override_dh_auto_build): Use "dpkg-buildflags"
+  * [c796896] debian/rules (release): Defer signing dsc and changes files
+  * [cc31cda] debian/rules (upload): New target
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Wed, 05 Nov 2014 23:05:48 +0100
+
+lacheck (1.26-14) unstable; urgency=low
+
+  * [cf5b199] debian/control: Use Breaks and Replaces instead of
+    Conflicts.
+  * [e2e74de] Track new upstream versions.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sun, 25 Dec 2011 04:38:59 +0100
+
+lacheck (1.26-13) unstable; urgency=low
+
+  * [83e0664] Update Standards-Version to 3.9.2.
+  * [636feda] Add debian/copyright to the source package.
+  * [b9a913a] debian/control(Description): Omit initial article.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sun, 18 Dec 2011 23:28:49 +0100
+
+lacheck (1.26-12) unstable; urgency=low
+
+  * [492d3a1] Switch to 3.0 (quilt) source format.
+  * [35c4d44] Update copyright year.
+  * [33f548c] Recommend texlive-latex-base instead of texlive-base.
+  * [d7db698] Do not ignore errors in "make clean".
+  * [56a5c2a] Move the extended description "Homepage:" pseudo-header to
+    a regular field.
+  * [7f27b63] Change doc-base section from "Apps/Editors" to "Editors".
+  * [25929f6] Do not call install-docs anymore in postinst.in and
+    prerm.in.
+  * [566c234] Remove no more needed debian/postinst.in and
+    debian/prerm.in.
+  * [0ebb8e5] Change EPerl sources suffix and rename binary package
+    specific files.
+  * [b8e10fb] Switch to debhelper.
+  * [7a79cac] Add patch: Add DESTDIR support to Makefile.
+  * [bbbc2ad] Add patch: Fix check target in Makefile.
+  * [ae4fe30] Update Standards-Version to 3.9.1.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Mon, 30 Aug 2010 19:22:21 +0200
+
+lacheck (1.26-11.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Recommend texlive-base instead of texlive-base-recommended, which is no
+    longer available (Closes: #448911).
+
+ -- Amaya Rodrigo Sastre <amaya@debian.org>  Mon, 31 Mar 2008 00:19:52 +0200
+
+lacheck (1.26-11) unstable; urgency=low
+
+  * rules.in (build-package): Added dependency on the "clean" target.
+
+  * copyright.in, COPYRIGHT, variables: Update copyright.
+  * postinst.in, prerm.in: Linting.
+  * postinst.in, prerm.in: Check script arguments before calling
+    actions.
+  * variables (DINSTALL, DREMOVE): Check for "install-docs" in "${PATH}"
+    rather than by absolute location.
+
+  * control (Recommends): Dropped "tetex-base".  (Closes: #424735)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Wed, 08 Aug 2007 11:56:01 +0200
+
+lacheck (1.26-10) unstable; urgency=low
+
+  * postinst.in, prerm.in: Fixed typo; exit 1 if called with unknown
+    argument; thanks to Justin Pryzby.
+
+  * control (Recommends): Added texlive alternative dependencies according
+    to <http://www.tug.org/texlive/debian.html>: "tetex-base |
+    texlive-base-recommended".
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Tue, 27 Jun 2006 20:22:58 +0200
+
+lacheck (1.26-9) unstable; urgency=low
+
+  * COPYRIGHT, copyright.in: Updated.
+  * control (Standards-Version): Updated to 3.7.2.
+  * control (Description): Added upstream URL.
+
+  * rules.in (%): Declare ${DEBIAN_DIR}.
+  * variables: Use it, to include "COPYRIGHT" in ePerl auto-generated files
+    located in a "debian/" subdirectory.
+
+  * rules.in (fixperms): New variable.  The command used to canonicalize
+    the whole tree permissions.
+    (clean): Use "$(fixperms)" to canonicalize permissions after cleaning.
+
+  * rules.in (%): Cater for ePerl "*.in" sources in subdirectories of
+    "debian".
+  
+  * rules.in (checkdir, checkroot): Should not be implemented by means of
+    phony targets, otherwise targets which depend on them will never be
+    up-to-date.
+    (build, clean, binary-indep, binary-arch): Change accordingly.
+
+  * General overhaul of the debian directory.
+  * bug.presubj, docbase: New files.
+  * preinst, postrm: Deleted.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Tue,  6 Jun 2006 19:19:04 +0200
+
+lacheck (1.26-8) unstable; urgency=low
+
+  * COPYRIGHT: Updated.
+  * README.in, copyright.in, postinst.in, postrm.in, preinst.in, prerm.in,
+    rules.in, variables: Linting.
+  * control (Standards-Version): Updated to 3.6.1.
+    (Description): Reflect the time passed; new AUCTeX name.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Mon, 25 Apr 2005 11:54:37 +0200
+
+lacheck (1.26-7) unstable; urgency=low
+
+  * control (Priority): Set to optional.
+    (Standards-Version): Updated to 3.5.10.
+  * postinst(do_link): Removed.
+  * prerm(undo_link): Removed.
+  * rules(STRIP): New variable.
+    (binary-arch): Use it.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sat, 28 Jun 2003 18:12:01 +0200
+
+lacheck (1.26-6) unstable; urgency=high
+
+  * control (Build-Depends): added eperl.
+  * rules (debian/rules): added.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Wed, 16 May 2001 14:50:11 +0200
+
+lacheck (1.26-5) unstable; urgency=low
+
+  * COPYRIGHT: Updated.
+  * rules: Added -isp to dpkg-gencontrol.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Fri, 12 Jan 2001 11:59:46 +0100
+
+lacheck (1.26-4) unstable; urgency=low
+
+  * copyright: Fixed typo. (Closes: #64259)
+  * control: Standards-Version: 3.2.1.
+  * rules: Rule to update system.variables added.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Fri, 20 Oct 2000 02:49:31 +0200
+
+lacheck (1.26-3) unstable; urgency=low
+
+  * Added compatibility doc link.
+  * EPerl handling of Debian files.
+  * COPYRIGHT: New file.
+  * postinst: New file.
+  * postrm: New file.
+  * preinst: New file.
+  * prerm: New file.
+  * system.variables: New file.
+  * variables: New file.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Thu, 14 Oct 1999 17:55:03 +0200
+
+lacheck (1.26-2) unstable; urgency=low
+
+  * control: Standards-Version: 3.0.0.
+  * rules: Updated accordingly.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Wed,  6 Oct 1999 00:42:24 +0200
+
+lacheck (1.26-1) unstable; urgency=low
+
+  * New upstream version.
+  * rules: Install README.Debian.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Tue, 25 Aug 1998 15:45:33 +0200
+
+lacheck (1.25-2) unstable; urgency=low
+
+  * README: New file.
+  * control: Updated Standards-Version: 2.4.0.0.
+  * copyright: GPL reference updated again.
+  * rules: Commented DEBIAN/du generating rule.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Fri,  6 Mar 1998 15:54:45 +0100
+
+lacheck (1.25-1) unstable; urgency=low
+
+  * New upstream version.
+  * rules: Build architecture specific stuff under binary-arch. (#17200)
+  * copyright: Updated GPL reference.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Fri, 16 Jan 1998 22:46:46 +0100
+
+lacheck (1.24-1) unstable; urgency=low
+
+  * New maintainer.
+  * New upstream version.
+  * control: lacheck matches standards version 2.3.0.1.
+  * rules: Heavily rewritten.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Mon, 12 Jan 1998 21:20:44 +0100
+
+lacheck (1.23-1.1) unstable; urgency=low
+
+  * non-maintainer upload for libc6
+  * fixed bug (#14416) by not compressing copyright file
+
+ -- Michael Meskes <meskes@debian.org>  Mon,  8 Dec 1997 15:11:22 +0100
+
+lacheck (1.23-1) unstable; urgency=low
+
+  * new package (separated lacheck from auctex)
+  * new maintainer Helmut Geyer
+
+ -- Helmut Geyer <Helmut.Geyer@iwr.uni-heidelberg.de>  Sat, 15 Mar 1997 20:05:19 +0100
+
+comment (0) UNRELEASED; urgency=low
+
+  * This is not a changelog entry.
+
+  * local variables:
+  * mode: debian-changelog
+  * ispell-local-dictionary: "american"
+  * end:
+
+  * LocalWords:  lacheck presubj README postinst postrm preinst prerm Meskes
+  * LocalWords:  auctex eperl debian isp dpkg gencontrol GPL du libc Geyer ePerl
+  * LocalWords:  linting docbase AUCTeX Helmut fixperms canonicalize checkdir
+  * LocalWords:  checkroot indep
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Thu, 01 Jan 1970 00:00:01 +0000

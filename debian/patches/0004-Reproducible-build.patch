@@ -1,0 +1,35 @@
+From: "Davide G. M. Salvetti" <salve@debian.org>
+Date: Sun, 15 Jan 2017 23:40:52 +0100
+Subject: Reproducible build
+
+Thanks: Chris Lamb
+---
+ Makefile | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 6c2a2a4..8dce486 100644
+--- a/Makefile
++++ b/Makefile
+@@ -41,6 +41,12 @@ FLEXFLAGS = -8
+ 
+ LIBS= #-ll
+ 
++ifdef SOURCE_DATE_EPOCH
++	BUILD_DATE ?= $(shell date -u -d "@$(SOURCE_DATE_EPOCH)" +%F 2>/dev/null || date -u -r "$(SOURCE_DATE_EPOCH)" +%F 2>/dev/null || date -u +%F)
++else
++	BUILD_DATE ?= $(shell date -u +%F)
++endif
++
+ $(LACHECK):	lacheck.o
+ 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/lacheck.o $(LIBS)
+ 
+@@ -55,7 +61,7 @@ lacheck.c:	lacheck.lex
+ 
+ lacheck.1: 	lacheck.man  
+ 	-sed -e "s!%%LACHECKREV%%!Release $(REV)!" $(srcdir)/lacheck.man |\
+-	sed -e "s!%%LACHECKDATE%%!`date +%D`!" |\
++	sed -e "s!%%LACHECKDATE%%!$(BUILD_DATE)!" |\
+ 	sed -e "s!%%LACHECKPATH%%!$(bindir)/$(LACHECK)!" > $@ 
+ 
+ test.new:	test.tex $(LACHECK) 

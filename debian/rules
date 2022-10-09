@@ -1,0 +1,77 @@
+#! /usr/bin/make -f
+#
+# makefile rules for the Debian package lacheck
+#
+# Copyright (C) 1997-2017 Davide G. M. Salvetti.
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation; either version 3 of the License, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+# or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+# for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# On Debian GNU/Linux System you can find a copy of the GNU General Public
+# License in "/usr/share/common-licenses/GPL".
+
+SHELL := /bin/bash
+SBUILD := sbuild --verbose
+
+EPERL_SRC := $(wildcard debian/*.eperl)
+EPERL_OBJ := $(EPERL_SRC:%.eperl=%)
+
+debian/clean: $(EPERL_OBJ)
+	echo $(filter-out debian/copyright debian/rules, $(EPERL_OBJ)) \
+		debian/clean > debian/clean
+
+%:: %.eperl
+	eperl -P -o $@ $<
+
+.PHONY: build
+build: debian/clean
+	dh $@ --exclude .eperl
+
+%:
+	dh $@ --exclude .eperl
+
+.PHONY: override_dh_auto_build
+override_dh_auto_build:
+	$(MAKE) $(shell dpkg-buildflags --export=cmdline) prefix=/usr \
+		lacheck lacheck.1
+
+.PHONY: override_dh_auto_install
+override_dh_auto_install:
+	dh_auto_install -- prefix=/usr mandir=/usr/share/man/man1
+
+.PHONY: snapshot
+snapshot: OBJ := --arch-any
+snapshot: DIST := unstable
+snapshot: BRANCH := $(shell git branch | perl -ne 'print if s/^\* //')
+snapshot: clean
+	gbp dch --debian-branch=$(BRANCH) --snapshot --auto --commit
+	gbp buildpackage --keyid='' \
+		--git-builder='$(SBUILD) $(OBJ) --dist=$(DIST)' \
+		--git-debian-branch=$(BRANCH)
+
+.PHONY: release
+release: OBJ := --arch-all --arch-any --source --source-only-changes
+release: DIST := unstable
+release: clean
+	git checkout master
+	gbp pq rebase
+	gbp pq export
+	gbp dch --release --commit
+	gbp buildpackage \
+		--git-builder='$(SBUILD) $(OBJ) --dist=$(DIST)' \
+		--git-tag
+
+.PHONY: upload
+upload: V := $(shell dpkg-parsechangelog --show-field Version)
+upload:
+	dput ../lacheck_$(V)_source.changes
